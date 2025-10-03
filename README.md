@@ -15,10 +15,12 @@ There are a few risks in hosting a server:
 With that out of the way, here is how to host a server.
 
 Step 1: Downloading the Code
+
 All you have to do is clone or download this repository. Pretty simple.
 
 Step 2: Running the Code
 Go into the server folder, then open a terminal and run the following:
+
 `node server.js`
 
 Boom! You're running a hbchat server!
