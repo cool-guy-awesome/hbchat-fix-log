@@ -7,21 +7,24 @@ const profanity = new Profanity({ wholeWord: false });
 
 const server = net.createServer((socket) => {
     console.log('Client connected');
-    
-    // Add client to list
     clients.push(socket);
 
     socket.on('data', (data) => {
         console.log('Received:', profanity.censor(data.toString()));
-        
-        // Send to all connected clients
         clients.forEach((client) => {
             client.write(profanity.censor(data.toString()));
         });
     });
 
-    // Remove client on disconnect
     socket.on('end', () => {
+        const index = clients.indexOf(socket);
+        if (index !== -1) {
+            clients.splice(index, 1);
+        }
+    });
+
+    socket.on('error', (err) => {
+        console.warn('Client connection error:', err.message);
         const index = clients.indexOf(socket);
         if (index !== -1) {
             clients.splice(index, 1);
