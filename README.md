@@ -1,8 +1,8 @@
 # hbchat
 Chatting application for 3DS (and Wii coming soon!)
 
-## Doesn't Work?
-You need to make sure you're connecting to a server (There are currently none as of writing this)
+## hbchat HAS A DEDICATED SERVER NOW! 🥳
+You can now easily message with anyone else who has hbchat with ease!
 
 ## How to Host Your Own hbchat Server
 First things first, you're going to need Node.JS, go ahead and install it, then come back
