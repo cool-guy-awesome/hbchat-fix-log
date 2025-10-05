@@ -36,7 +36,7 @@ int main(int argc, char **argv) {
     memset(&server, 0, sizeof(server));
     server.sin_family = AF_INET;
     server.sin_port = htons(3071); // Every hbchat server should be on port 3071, if not, it will not work with any default instance, I might change this.
-    server.sin_addr.s_addr = inet_addr("PUT SERVER IP HERE"); // There is currently no default server, please wait until a solution is found or host your own server.
+    server.sin_addr.s_addr = inet_addr("104.236.25.60"); // My server
 
     if (connect(sock, (struct sockaddr*)&server, sizeof(server)) != 0) {
         printf("Connect failed\n");
