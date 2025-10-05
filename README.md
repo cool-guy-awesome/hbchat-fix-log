@@ -4,6 +4,16 @@ Chatting application for 3DS (and Wii coming soon!)
 ## hbchat HAS A DEDICATED SERVER NOW! 🥳
 You can now easily message with anyone else who has hbchat with ease!
 
+
+
+# How to use 
+Download the .3dsx or .cia from the latest release and put it in your 3ds folder on your SD Card, then launch the app from the Homebrew Launcher.
+
+Press A to change your username and B to send a message
+
+There is profanity censoring.
+
+
 ## How to Host Your Own hbchat Server
 First things first, you're going to need Node.JS, go ahead and install it, then come back
 
