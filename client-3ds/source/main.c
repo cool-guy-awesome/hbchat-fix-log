@@ -11,25 +11,47 @@
 
 #include <3ds/applets/swkbd.h>
 
+#include <citro2d.h>
+
+C2D_TextBuf sbuffer;
+C2D_Text stext;
+
+C2D_TextBuf chatbuffer;
+C2D_Text chat;
+
+char chatstring[6000] = "-chat-";
+
+float chatscroll = 0;
+
+
+
 int main(int argc, char **argv) {
     gfxInitDefault();
-    PrintConsole topScreen, bottomScreen;
-    consoleInit(GFX_TOP, &topScreen);
-    consoleInit(GFX_BOTTOM, &bottomScreen);
-    consoleSelect(&topScreen);
-    printf("\x1b[2J");
+    C3D_Init(C3D_DEFAULT_CMDBUF_SIZE);
+    C2D_Init(C2D_DEFAULT_MAX_OBJECTS);
+    C2D_Prepare();
+    C3D_RenderTarget* top = C2D_CreateScreenTarget(GFX_TOP, GFX_LEFT);
+    C3D_RenderTarget* bottom = C2D_CreateScreenTarget(GFX_BOTTOM, GFX_LEFT);
+
+    sbuffer = C2D_TextBufNew(4096);
+    chatbuffer = C2D_TextBufNew(4096);
+
+
+    C2D_TextParse(&chat, chatbuffer, chatstring);
+    C2D_TextOptimize(&chat);
+
 
     u32 *soc_buffer = memalign(0x1000, 0x100000);
     if (!soc_buffer) {
-        printf("Failed to allocate SOC buffer\n");
+        // placeholder
     }
     if (socInit(soc_buffer, 0x100000) != 0) {
-        printf("socInit failed\n");
+        // placeholder
     }
 
     int sock = socket(AF_INET, SOCK_STREAM, 0);
     if (sock < 0) {
-        printf("Socket create failed\n");
+        // placeholder
     }
 
     struct sockaddr_in server;
@@ -39,12 +61,8 @@ int main(int argc, char **argv) {
     server.sin_addr.s_addr = inet_addr("104.236.25.60"); // My server
 
     if (connect(sock, (struct sockaddr*)&server, sizeof(server)) != 0) {
-        printf("Connect failed\n");
+        // placeholder
     }
-
-    printf("hbchat\n");
-    printf("v0.0.1\n");
-    printf("Press START to exit (or just use the home menu button)\n");
 
     char username[32];
 
@@ -82,7 +100,6 @@ int main(int argc, char **argv) {
             if (button == SWKBD_BUTTON_CONFIRM) {
                 sprintf(msg, "<%s>: %s", username, message);
                 send(sock, msg, strlen(msg), 0);
-                consoleSelect(&topScreen);
                 printf("Message sent!\n");
             }
         }
@@ -99,15 +116,50 @@ int main(int argc, char **argv) {
             ssize_t len = recv(sock, buffer, sizeof(buffer)-1, 0);
             if (len > 0) {
                 buffer[len] = '\0';
-                consoleSelect(&bottomScreen);
-                printf("%s\n", buffer);
-                consoleSelect(&topScreen);
+
+                sprintf(chatstring, "%s\n%s", chatstring, buffer);
+
+                C2D_TextParse(&chat, chatbuffer, chatstring);
+                C2D_TextOptimize(&chat);
+                chatscroll = chatscroll - 10;
             }
         }
 
         if (hidKeysDown() & KEY_START) break;
-        gfxFlushBuffers();
-        gfxSwapBuffers();
+
+        if (hidKeysHeld() & KEY_CPAD_DOWN) {
+            chatscroll = chatscroll - 5;
+        }
+
+        if (hidKeysHeld() & KEY_CPAD_UP) {
+            chatscroll = chatscroll + 5;
+        }
+
+        C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
+        C2D_TargetClear(top, C2D_Color32(0x00, 0x0E, 0xE0, 0xFF));
+        C2D_SceneBegin(top);
+
+        C2D_TextBufClear(sbuffer);
+        C2D_TextParse(&stext, sbuffer, "hbchat");
+        C2D_TextOptimize(&stext);
+
+        C2D_DrawText(&stext, 0, 155.0f, 0.0f, 0.5f, 1.0f, 1.0f);
+
+        C2D_TargetClear(bottom, C2D_Color32(0x00, 0x0E, 0xE0, 0xFF));
+        C2D_SceneBegin(bottom);
+
+        C2D_DrawText(&chat, 0, 0.0f, chatscroll, 0.5f, 0.5f, 0.5f);
+
+
+
+        C3D_FrameEnd(0);
+
+
+
+
+
+
+
     }
     closesocket(sock);
     socExit();
