@@ -1,9 +1,13 @@
 # hbchat
 Chatting application for 3DS (and Wii coming soon!)
 
-## hbchat HAS A DEDICATED SERVER NOW! 🥳
-You can now easily message with anyone else who has hbchat with ease!
+## Extra clients and other things
+_**There's a web client now!**_
 
+Enjoy chatting with 3DS users and other web users on **THE WEB CLIENT**
+
+Link (I do not have a domain yet):
+[hbchat Web Client](http://104.236.25.60/)
 
 
 # How to use 
