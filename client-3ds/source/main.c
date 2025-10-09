@@ -20,6 +20,7 @@ C2D_TextBuf chatbuffer;
 C2D_Text chat;
 
 char chatstring[6000] = "-chat-";
+char usernameholder[64];
 
 float chatscroll = 0;
 
@@ -122,6 +123,16 @@ int main(int argc, char **argv) {
                 C2D_TextParse(&chat, chatbuffer, chatstring);
                 C2D_TextOptimize(&chat);
                 chatscroll = chatscroll - 10;
+
+                const char* parseResult = C2D_TextParse(&chat, chatbuffer, chatstring);
+                if (parseResult != NULL && *parseResult != '\0') {
+                    chatbuffer = C2D_TextBufResize(chatbuffer, 8192);
+                    if (chatbuffer) {
+                        C2D_TextBufClear(chatbuffer);
+                        C2D_TextParse(&chat, chatbuffer, chatstring);
+                    }
+                }
+                C2D_TextOptimize(&chat);
             }
         }
 
@@ -145,10 +156,19 @@ int main(int argc, char **argv) {
 
         C2D_DrawText(&stext, 0, 155.0f, 0.0f, 0.5f, 1.0f, 1.0f);
 
+        sprintf(usernameholder, "%s %s", "Username:", username);
+
+        C2D_TextBufClear(sbuffer);
+        C2D_TextParse(&stext, sbuffer, usernameholder);
+        C2D_TextOptimize(&stext);
+
+        C2D_DrawText(&stext, 0, 0.0f, 200.0f, 0.5f, 1.0f, 1.0f);
+
+
         C2D_TargetClear(bottom, C2D_Color32(0x00, 0x0E, 0xE0, 0xFF));
         C2D_SceneBegin(bottom);
 
-        C2D_DrawText(&chat, 0, 0.0f, chatscroll, 0.5f, 0.5f, 0.5f);
+        C2D_DrawText(&chat, C2D_WordWrap, 0.0f, chatscroll, 0.5f, 0.5f, 0.5f, 350.0f);
 
 
 
