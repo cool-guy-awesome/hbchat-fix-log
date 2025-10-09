@@ -164,11 +164,16 @@ int main(int argc, char **argv) {
 
         C2D_DrawText(&stext, 0, 0.0f, 200.0f, 0.5f, 1.0f, 1.0f);
 
+        C2D_TextBufClear(sbuffer);
+        C2D_TextParse(&stext, sbuffer, "A: Change Username\nB: Send Message");
+        C2D_TextOptimize(&stext);
+
+        C2D_DrawText(&stext, 0, 0.0f, 100.0f, 0.5f, 0.6f, 0.6f);
 
         C2D_TargetClear(bottom, C2D_Color32(0x00, 0x0E, 0xE0, 0xFF));
         C2D_SceneBegin(bottom);
 
-        C2D_DrawText(&chat, C2D_WordWrap, 0.0f, chatscroll, 0.5f, 0.5f, 0.5f, 350.0f);
+        C2D_DrawText(&chat, C2D_WordWrap, 0.0f, chatscroll, 0.5f, 0.5f, 0.5f, 330.0f);
 
 
 
