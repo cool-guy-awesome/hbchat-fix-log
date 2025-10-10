@@ -85,7 +85,7 @@ int main(int argc, char **argv) {
     C3D_RenderTarget* bottom = C2D_CreateScreenTarget(GFX_BOTTOM, GFX_LEFT);
 
     sbuffer = C2D_TextBufNew(4096);
-    chatbuffer = C2D_TextBufNew(4096);
+    chatbuffer = C2D_TextBufNew(10000);
 
 
     C2D_TextParse(&chat, chatbuffer, chatstring);
