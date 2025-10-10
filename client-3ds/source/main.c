@@ -65,7 +65,7 @@ int main(int argc, char **argv) {
         // placeholder
     }
 
-    char username[32];
+    char username[11];
 
     struct timeval timeout;
     timeout.tv_sec = 0;
@@ -80,7 +80,7 @@ int main(int argc, char **argv) {
             char message[64];
             char input[64];
             SwkbdState swkbd;
-            swkbdInit(&swkbd, SWKBD_TYPE_NORMAL, 1, 63);
+            swkbdInit(&swkbd, SWKBD_TYPE_NORMAL, 1, 11);
             swkbdSetFeatures(&swkbd, SWKBD_PREDICTIVE_INPUT);
             swkbdSetValidation(&swkbd, SWKBD_NOTEMPTY, 0, 0);
 
