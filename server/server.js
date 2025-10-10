@@ -10,17 +10,9 @@ const server = net.createServer((socket) => {
     clients.push(socket);
 
     socket.on('data', (data) => {
-        const jsonDat = profanity.censor(data.toString());
-        console.log(`Received: ${jsonDat}`);
+        console.log('Received:', profanity.censor(data.toString()));
         clients.forEach((client) => {
-            let data;
-            try {
-                data = JSON.parse(jsonDat);
-            } catch (error) {
-                console.error(`Error! ${error}`);
-                return;
-            }
-            client.write(profanity.censor(`<${data.user.substring(0, 10)}> ${data.message.substring(0, 64)}`));
+            client.write(profanity.censor(data.toString()));
         });
     });
 
@@ -40,6 +32,6 @@ const server = net.createServer((socket) => {
     });
 });
 
-server.listen(3071, '127.0.0.1', () => {
+server.listen(3071, '0.0.0.0', () => {
     console.log('Running hbchat server v0.0.1 on port 3071.');
 });
