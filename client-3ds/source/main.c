@@ -25,7 +25,6 @@ char usernameholder[64];
 float chatscroll = 0;
 
 char* convertToJsonString(const char array[64]) {
-    // Allocate enough space for the JSON string
     size_t length = strlen(array);
     char* jsonStr = (char*)malloc((length * 2 + 3) * sizeof(char));
     if (!jsonStr) {
