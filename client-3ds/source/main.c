@@ -24,7 +24,58 @@ char usernameholder[64];
 
 float chatscroll = 0;
 
+char* convertToJsonString(const char array[64]) {
+    // Allocate enough space for the JSON string
+    size_t length = strlen(array);
+    char* jsonStr = (char*)malloc((length * 2 + 3) * sizeof(char));
+    if (!jsonStr) {
+        return NULL;
+    }
 
+    jsonStr[0] = '\"';
+    size_t j = 1;
+
+    for (size_t i = 0; i < length; i++) {
+        switch (array[i]) {
+            case '\"':
+                jsonStr[j++] = '\\';
+                jsonStr[j++] = '\"';
+                break;
+            case '\\':
+                jsonStr[j++] = '\\';
+                jsonStr[j++] = '\\';
+                break;
+            case '\b':
+                jsonStr[j++] = '\\';
+                jsonStr[j++] = 'b';
+                break;
+            case '\f':
+                jsonStr[j++] = '\\';
+                jsonStr[j++] = 'f';
+                break;
+            case '\n':
+                jsonStr[j++] = '\\';
+                jsonStr[j++] = 'n';
+                break;
+            case '\r':
+                jsonStr[j++] = '\\';
+                jsonStr[j++] = 'r';
+                break;
+            case '\t':
+                jsonStr[j++] = '\\';
+                jsonStr[j++] = 't';
+                break;
+            default:
+                jsonStr[j++] = array[i];
+                break;
+        }
+    }
+
+    jsonStr[j++] = '\"';
+    jsonStr[j] = '\0';
+
+    return jsonStr;
+}
 
 int main(int argc, char **argv) {
     gfxInitDefault();
@@ -65,41 +116,38 @@ int main(int argc, char **argv) {
         // placeholder
     }
 
-    char username[32];
+    char username[11];
+    char message[65];
+    char buffer[512];
 
     struct timeval timeout;
     timeout.tv_sec = 0;
     timeout.tv_usec = 10000; // 10ms
 
-    char buffer[512];
     while (aptMainLoop()) {
         gspWaitForVBlank();
         hidScanInput();
 
         if (hidKeysDown() & KEY_A) {
-            char message[64];
-            char input[64];
             SwkbdState swkbd;
-            swkbdInit(&swkbd, SWKBD_TYPE_NORMAL, 1, 63);
+            swkbdInit(&swkbd, SWKBD_TYPE_NORMAL, 1, 10);
             swkbdSetFeatures(&swkbd, SWKBD_PREDICTIVE_INPUT);
             swkbdSetValidation(&swkbd, SWKBD_NOTEMPTY, 0, 0);
 
-            SwkbdButton button = swkbdInputText(&swkbd, username, sizeof(username)); 
+            swkbdInputText(&swkbd, username, sizeof(username)); 
         }
 
         if (hidKeysDown() & KEY_B) {
-            char message[64];
-            char msg[128];
+            char msg[620];
+            memset(message, 0, sizeof(message));
 
-            char input[64];
             SwkbdState swkbd;
-            swkbdInit(&swkbd, SWKBD_TYPE_NORMAL, 1, 63);
+            swkbdInit(&swkbd, SWKBD_TYPE_NORMAL, 1, 64);
             swkbdSetFeatures(&swkbd, SWKBD_PREDICTIVE_INPUT);
             swkbdSetValidation(&swkbd, SWKBD_NOTEMPTY, 0, 0);
 
-            SwkbdButton button = swkbdInputText(&swkbd, message, sizeof(message));
-            if (button == SWKBD_BUTTON_CONFIRM) {
-                sprintf(msg, "<%s>: %s", username, message);
+            if (swkbdInputText(&swkbd, message, sizeof(message)) == SWKBD_BUTTON_CONFIRM) {
+                sprintf(msg, "{\"user\":%s,\"message\":%s}", convertToJsonString(username), convertToJsonString(message));
                 send(sock, msg, strlen(msg), 0);
                 printf("Message sent!\n");
             }
