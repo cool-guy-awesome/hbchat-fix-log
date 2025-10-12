@@ -1,6 +1,10 @@
 # hbchat
 Chatting application for 3DS (and Wii coming soon!)
 
+## If you would like to commit
+Please help me add accounts, mod tools, security fixes, and things, I am dying from toxic people online...
+
+
 ## Extra clients and other things
 _**There's a web client now!**_
 
