@@ -11,11 +11,7 @@ _**There's a web client now!**_
 Enjoy chatting with 3DS users and other web users on **THE WEB CLIENT**
 
 Link:
-[hbchat Web Client](http://104.236.25.60/)
-
-Domain Link:
-http://hbchat.jumpingcrab.com/
-(Best name someone could get for a free domain tbh)
+[hbchat Web Client](http://hbchat.jumpingcrab.com/noonewilleverfindthis.html)
 
 
 # How to use 
