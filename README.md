@@ -1,17 +1,17 @@
 # hbchat
 Chatting application for 3DS (and Wii coming soon!)
 
+## If you would like to commit
+Please help me add accounts, mod tools, security fixes, and things, I am dying from toxic people online...
+
+
 ## Extra clients and other things
 _**There's a web client now!**_
 
 Enjoy chatting with 3DS users and other web users on **THE WEB CLIENT**
 
 Link:
-[hbchat Web Client](http://104.236.25.60/)
-
-Domain Link:
-http://hbchat.jumpingcrab.com/
-(Best name someone could get for a free domain tbh)
+[hbchat Web Client](http://hbchat.jumpingcrab.com/noonewilleverfindthis.html)
 
 
 # How to use 
