@@ -22,7 +22,11 @@ C2D_Text chat;
 char chatstring[6000] = "-chat-";
 char usernameholder[64];
 
-float chatscroll = 0;
+float chatscroll = 20;
+
+int scene = 1;
+
+bool inacc = false;
 
 
 
@@ -35,7 +39,7 @@ int main(int argc, char **argv) {
     C3D_RenderTarget* bottom = C2D_CreateScreenTarget(GFX_BOTTOM, GFX_LEFT);
 
     sbuffer = C2D_TextBufNew(4096);
-    chatbuffer = C2D_TextBufNew(10000);
+    chatbuffer = C2D_TextBufNew(4096);
 
 
     C2D_TextParse(&chat, chatbuffer, chatstring);
@@ -91,15 +95,20 @@ int main(int argc, char **argv) {
             char message[64];
             char msg[128];
 
-            char input[64];
+            char input[80];
             SwkbdState swkbd;
-            swkbdInit(&swkbd, SWKBD_TYPE_NORMAL, 1, 63);
+            swkbdInit(&swkbd, SWKBD_TYPE_NORMAL, 1, 80);
             swkbdSetFeatures(&swkbd, SWKBD_PREDICTIVE_INPUT);
             swkbdSetValidation(&swkbd, SWKBD_NOTEMPTY, 0, 0);
 
             SwkbdButton button = swkbdInputText(&swkbd, message, sizeof(message));
             if (button == SWKBD_BUTTON_CONFIRM) {
-                sprintf(msg, "<%s>: %s", username, message);
+                if (inacc) {
+                    sprintf(msg, "<%s>: %s", username, message);
+                }
+                if (!inacc) {
+                    sprintf(msg, "<%s>: %s", username, message);
+                }
                 send(sock, msg, strlen(msg), 0);
                 printf("Message sent!\n");
             }
@@ -122,7 +131,7 @@ int main(int argc, char **argv) {
 
                 C2D_TextParse(&chat, chatbuffer, chatstring);
                 C2D_TextOptimize(&chat);
-                chatscroll = chatscroll - 10;
+                chatscroll = chatscroll - 25;
 
                 const char* parseResult = C2D_TextParse(&chat, chatbuffer, chatstring);
                 if (parseResult != NULL && *parseResult != '\0') {
@@ -136,6 +145,16 @@ int main(int argc, char **argv) {
             }
         }
 
+
+        if (strlen(chatstring) > 3500) {
+            strcpy(chatstring, "-chat-\n");
+            C2D_TextBufClear(chatbuffer);
+            C2D_TextParse(&chat, chatbuffer, chatstring);
+            C2D_TextOptimize(&chat);
+            chatscroll = 20;
+        }
+
+
         if (hidKeysDown() & KEY_START) break;
 
         if (hidKeysHeld() & KEY_CPAD_DOWN) {
@@ -146,44 +165,70 @@ int main(int argc, char **argv) {
             chatscroll = chatscroll + 5;
         }
 
+        if ((hidKeysDown() & KEY_L) && scene == 1) {
+            scene = 2;
+        }
+
+        if ((hidKeysDown() & KEY_X) && scene == 2) {
+            scene = 1;
+        }
+
+
         C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
         C2D_TargetClear(top, C2D_Color32(0x00, 0x0E, 0xE0, 0xFF));
         C2D_SceneBegin(top);
 
-        C2D_TextBufClear(sbuffer);
-        C2D_TextParse(&stext, sbuffer, "hbchat");
-        C2D_TextOptimize(&stext);
 
-        C2D_DrawText(&stext, 0, 155.0f, 0.0f, 0.5f, 1.0f, 1.0f);
+        if (scene == 1) {
+            C2D_TextBufClear(sbuffer);
+            C2D_TextParse(&stext, sbuffer, "hbchat");
+            C2D_TextOptimize(&stext);
 
-        sprintf(usernameholder, "%s %s", "Username:", username);
+            C2D_DrawText(&stext, 0, 315.0f, 0.0f, 0.5f, 1.0f, 1.0f);
 
-        C2D_TextBufClear(sbuffer);
-        C2D_TextParse(&stext, sbuffer, usernameholder);
-        C2D_TextOptimize(&stext);
+            sprintf(usernameholder, "%s %s", "Username:", username);
 
-        C2D_DrawText(&stext, 0, 0.0f, 200.0f, 0.5f, 1.0f, 1.0f);
+            C2D_TextBufClear(sbuffer);
+            C2D_TextParse(&stext, sbuffer, usernameholder);
+            C2D_TextOptimize(&stext);
 
-        C2D_TextBufClear(sbuffer);
-        C2D_TextParse(&stext, sbuffer, "A: Change Username\nB: Send Message");
-        C2D_TextOptimize(&stext);
+            C2D_DrawText(&stext, 0, 0.0f, 200.0f, 0.5f, 1.0f, 1.0f);
 
-        C2D_DrawText(&stext, 0, 0.0f, 100.0f, 0.5f, 0.6f, 0.6f);
+
+            C2D_TextBufClear(sbuffer);
+            C2D_TextParse(&stext, sbuffer, "v0.0.3");
+            C2D_TextOptimize(&stext);
+
+            C2D_DrawText(&stext, 0, 352.0f, 25.0f, 0.5f, 0.6f, 0.6f);
+
+
+
+            C2D_TextBufClear(sbuffer);
+            C2D_TextParse(&stext, sbuffer, "A: Change Username\nB: Send Message\nL: Rules\nR: Account (not available yet)");
+            C2D_TextOptimize(&stext);
+
+            C2D_DrawText(&stext, 0, 0.0f, 0.0f, 0.5f, 0.6f, 0.6f);
+
+        }
+
+
+        if (scene == 2) {
+            C2D_TextBufClear(sbuffer);
+            C2D_TextParse(&stext, sbuffer, "(Press X to Go Back)\n\nRule 1: No Spamming\n\nRule 2: No Swearing\n\nRule 3: No Impersonating\n\nRule 4: No Politics\n\nAll of these could result in a ban.");
+            C2D_TextOptimize(&stext);
+
+            C2D_DrawText(&stext, 0, 0.0f, 0.0f, 0.5f, 0.6f, 0.6f);
+        }
+
 
         C2D_TargetClear(bottom, C2D_Color32(0x00, 0x0E, 0xE0, 0xFF));
         C2D_SceneBegin(bottom);
 
-        C2D_DrawText(&chat, C2D_WordWrap, 0.0f, chatscroll, 0.5f, 0.5f, 0.5f, 330.0f);
+        C2D_DrawText(&chat, C2D_WordWrap, 0.0f, chatscroll, 0.5f, 0.5f, 0.5f, 290.0f);
 
 
 
         C3D_FrameEnd(0);
-
-
-
-
-
-
 
     }
     closesocket(sock);
