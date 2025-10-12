@@ -1,3 +1,12 @@
+# DO NOT JOIN ANY SERVERS UNTIL OTHERWISE MENTIONED BY ME @VirtuallyExisting
+On 10/11/2025 there was a hacker who leaked several people's IPs and swatted people. Me and 1 other developer are working to resolve issues and restore hbchat to it's former glory, probably under a new name.
+
+THIS REPOSITORY IS BEING ARCHIVED AND HAVING EVERY FILE SCRAPED FROM IT
+
+DO NOT RUN ANY VERSION OF HBCHAT AS IT WILL PUT YOU AT RISK OF A DOXXING.
+
+
+
 # hbchat
 Chatting application for 3DS (and Wii coming soon!)
 
