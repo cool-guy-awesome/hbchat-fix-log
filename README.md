@@ -1,3 +1,7 @@
+# This is an archive
+Me and Project Rose devs are working on a remake called Let's Chat, that will also have Wii U support, so, a happy ending I guess...?
+
+
 # DO NOT JOIN ANY SERVERS UNTIL OTHERWISE MENTIONED BY ME @VirtuallyExisting
 On 10/11/2025 there was a hacker who leaked several people's IPs and swatted people. Me and 1 other developer are working to resolve issues and restore hbchat to it's former glory, probably under a new name.
 
