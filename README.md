@@ -1,12 +1,10 @@
-# DO NOT TRY TO INTERACT WITH THE SERVER
-The server is currently being exploited and most likely an attempted DDoS attack is occuring. Also, hbchat is dead.
+# This repo has come to an end.
+I am working on a remake called Let's Chat that will be more secure, also, Fleetway (the doxxer) was arrested.
 
-There was a doxxing by a hacker named "Fleetway"
+# what happened?
+hbchat was great, until fleetway came along and doxxed a ton of people, there have been 4 home addresses exposed, and I am going to attempt to notify the victims of this.
 
-Do not trust him at any cost. He is a terrorist and a hacker.
+# Is Let's Chat out yet?
+No, and we have no ETA, but I'm thinking *maybe* early 2026. I really wish it could be a christmas release, however that might not be the case.
 
-Me and others are investigating. You are welcome to ask questions
-
-I am working on a remake called Let's Chat along with Project Rose, so it won't have doxxing issues.
-
-Take this advice and go on.
+Feel free to look around here, the source code is not reccomended to run, but you can if you want to I suppose, you'll just have to figure out how to.
