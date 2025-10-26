@@ -1,3 +1,8 @@
+# Hackertron here
+Go check out Let's Chat or AuroraChat, I kinda help with those. Original README below.
+
+
+
 # This repo has come to an end.
 I am working on a remake called Let's Chat that will be more secure, also, Fleetway (the doxxer) was arrested.
 
